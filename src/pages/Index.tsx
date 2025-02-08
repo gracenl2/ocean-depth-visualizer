@@ -47,7 +47,7 @@ const Index = () => {
                     setSelectedCity(city);
                     setSearchQuery('');
                   }}
-                  className="w-full text-left p-3 hover:bg-white/10 rounded-lg transition-colors"
+                  className="w-full text-left p-3 hover:bg-white/10 rounded-lg transition-colors text-white"
                 >
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-white/80" />
@@ -66,7 +66,7 @@ const Index = () => {
           <MapPin className="w-5 h-5" />
           <span className="text-sm">{selectedCity.name}, {selectedCity.address}</span>
         </div>
-        <div className="text-white/80">
+        <div className="text-white">
           <div className="text-xl font-semibold">
             {new Date().toLocaleDateString('en-US', {
               weekday: 'long',
@@ -88,7 +88,7 @@ const Index = () => {
       <div className="container mt-8">
         <Card className="bg-monitor-card backdrop-blur-lg border-white/10">
           <div className="p-6 space-y-8">
-            <h1 className="text-3xl font-bold">Water Level Monitor</h1>
+            <h1 className="text-3xl font-bold text-white">Water Level Monitor</h1>
             
             {/* Wave Animation */}
             <div className="relative">
@@ -100,7 +100,7 @@ const Index = () => {
               {/* Current Level Display */}
               <div className="absolute bottom-8 right-8 bg-monitor-card backdrop-blur p-4 rounded-lg">
                 <div className="text-sm text-white/80">Current Level</div>
-                <div className="text-4xl font-bold">{(selectedCity.currentLevel * 100).toFixed(0)}m</div>
+                <div className="text-4xl font-bold text-white">{(selectedCity.currentLevel * 100).toFixed(0)}m</div>
               </div>
             </div>
           </div>
