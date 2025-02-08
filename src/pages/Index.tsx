@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import WaveAnimation from '@/components/WaveAnimation';
+import WaterLevelHistory from '@/components/WaterLevelHistory';
 import { MapPin } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
@@ -55,6 +56,9 @@ const Index = () => {
             </div>
           </div>
         </Card>
+
+        {/* Water Level History */}
+        <WaterLevelHistory />
       </div>
     </div>
   );
