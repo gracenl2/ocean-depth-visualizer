@@ -29,11 +29,16 @@ const WaveAnimation = ({ currentLevel, averageLevel }: WaveAnimationProps) => {
       ctx.beginPath();
       ctx.moveTo(0, canvas.height * (1 - averageLevel));
       ctx.lineTo(canvas.width, canvas.height * (1 - averageLevel));
-      ctx.strokeStyle = '#94A3B8';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.stroke();
+      ctx.setLineDash([]);
+      
+      // Add "Historical Average" label
+      ctx.font = '14px Arial';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.fillText('Historical Average', 10, canvas.height * (1 - averageLevel) - 10);
       
       // Draw animated wave
-      ctx.setLineDash([]);
       ctx.beginPath();
       ctx.moveTo(0, canvas.height);
       
@@ -44,7 +49,13 @@ const WaveAnimation = ({ currentLevel, averageLevel }: WaveAnimationProps) => {
       
       ctx.lineTo(canvas.width, canvas.height);
       ctx.lineTo(0, canvas.height);
-      ctx.fillStyle = '#0EA5E9';
+      
+      // Create gradient
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, 'rgba(64, 180, 179, 0.8)');
+      gradient.addColorStop(1, 'rgba(64, 180, 179, 0.4)');
+      
+      ctx.fillStyle = gradient;
       ctx.fill();
       
       offset += 0.05;
@@ -61,7 +72,7 @@ const WaveAnimation = ({ currentLevel, averageLevel }: WaveAnimationProps) => {
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-64 rounded-lg"
+      className="w-full h-64 rounded-lg bg-monitor-water/10"
       width={800}
       height={256}
     />

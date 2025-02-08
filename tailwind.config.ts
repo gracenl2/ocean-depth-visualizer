@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -24,6 +23,11 @@ export default {
           light: "#D3E4FD",
           DEFAULT: "#0EA5E9",
           dark: "#0C4A6E",
+        },
+        monitor: {
+          background: "#018786",
+          card: "rgba(255, 255, 255, 0.1)",
+          water: "#40B4B3",
         },
         weather: {
           sunny: "#F2FCE2",
