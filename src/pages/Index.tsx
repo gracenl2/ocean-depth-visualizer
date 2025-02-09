@@ -14,18 +14,30 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
-
-// Sample data - in a real app this would come from an API
-const cities = [
-  { id: 1, name: 'Université de Montréal', address: '2900, Boulevard Éd...', currentLevel: 0.75, averageLevel: 0.5 },
-  { id: 2, name: 'Quebec City', address: '123 Rue Principal', currentLevel: 0.82, averageLevel: 0.6 },
-  { id: 3, name: 'Ottawa', address: '456 Parliament St', currentLevel: 0.68, averageLevel: 0.45 },
-];
+import { useWaterLevelData } from '@/services/waterLevelService';
+import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
+  const { data: cities = [], isError, isLoading } = useWaterLevelData();
   const [selectedCity, setSelectedCity] = useState(cities[0]);
   const navigate = useNavigate();
+
+  // Update selected city when data loads
+  useState(() => {
+    if (cities.length > 0 && !selectedCity) {
+      setSelectedCity(cities[0]);
+    }
+  });
+
+  if (isError) {
+    toast({
+      title: "Error",
+      description: "Failed to fetch water level data",
+      variant: "destructive",
+    });
+  }
 
   const filteredCities = cities.filter(city =>
     city.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -107,52 +119,62 @@ const Index = () => {
 
       {/* Location and Date Header */}
       <div className="container pt-4 space-y-2">
-        <div className="flex items-center gap-2 text-white/90">
-          <MapPin className="w-5 h-5" />
-          <span className="text-sm">{selectedCity.name}, {selectedCity.address}</span>
-        </div>
-        <div className="text-white">
-          <div className="text-xl font-semibold">
-            {new Date().toLocaleDateString('en-US', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </div>
-          <div className="text-sm">
-            {new Date().toLocaleTimeString('en-US', {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </div>
-        </div>
+        {selectedCity && (
+          <>
+            <div className="flex items-center gap-2 text-white/90">
+              <MapPin className="w-5 h-5" />
+              <span className="text-sm">{selectedCity.name}, {selectedCity.address}</span>
+            </div>
+            <div className="text-white">
+              <div className="text-xl font-semibold">
+                {new Date().toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </div>
+              <div className="text-sm">
+                {new Date().toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Main Content */}
       <div className="container mt-8">
-        <Card className="bg-monitor-card backdrop-blur-lg border-white/10">
-          <div className="p-6 space-y-8">
-            <h1 className="text-3xl font-bold text-white">Water Level Monitor</h1>
-            
-            {/* Wave Animation */}
-            <div className="relative">
-              <WaveAnimation
-                currentLevel={selectedCity.currentLevel}
-                averageLevel={selectedCity.averageLevel}
-              />
+        {isLoading ? (
+          <div className="text-center">Loading water level data...</div>
+        ) : selectedCity ? (
+          <Card className="bg-monitor-card backdrop-blur-lg border-white/10">
+            <div className="p-6 space-y-8">
+              <h1 className="text-3xl font-bold text-white">Water Level Monitor</h1>
               
-              {/* Current Level Display */}
-              <div className="absolute bottom-8 right-8 bg-monitor-card backdrop-blur p-4 rounded-lg">
-                <div className="text-sm text-white/80">Current Level</div>
-                <div className="text-4xl font-bold text-white">{(selectedCity.currentLevel * 100).toFixed(0)}m</div>
+              {/* Wave Animation */}
+              <div className="relative">
+                <WaveAnimation
+                  currentLevel={selectedCity.currentLevel}
+                  averageLevel={selectedCity.averageLevel}
+                />
+                
+                {/* Current Level Display */}
+                <div className="absolute bottom-8 right-8 bg-monitor-card backdrop-blur p-4 rounded-lg">
+                  <div className="text-sm text-white/80">Current Level</div>
+                  <div className="text-4xl font-bold text-white">{(selectedCity.currentLevel * 100).toFixed(1)}m</div>
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        ) : null}
 
         {/* Water Level History */}
-        <WaterLevelHistory />
+        {selectedCity && (
+          <WaterLevelHistory stationId={selectedCity.id} />
+        )}
       </div>
     </div>
   );
