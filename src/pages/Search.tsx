@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import WaveAnimation from '@/components/WaveAnimation';
 import WaterLevelHistory from '@/components/WaterLevelHistory';
-import { MapPin, Search, Menu, Home, Bell } from 'lucide-react';
+import { MapPin, Search as SearchIcon, Menu, Home, Bell } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -33,7 +33,7 @@ const Search = () => {
 
   const navigationItems = [
     { name: 'Main', icon: Home, action: () => navigate('/') },
-    { name: 'Search', icon: Search, action: () => navigate('/search') },
+    { name: 'Search', icon: SearchIcon, action: () => navigate('/search') },
     { name: 'Alerts', icon: Bell, action: () => navigate('/safety') },
   ];
 
@@ -78,7 +78,7 @@ const Search = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/60"
           />
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
+          <SearchIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
         </div>
         
         {/* Search Results */}
