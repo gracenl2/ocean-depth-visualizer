@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import WaveAnimation from '@/components/WaveAnimation';
 import WaterLevelHistory from '@/components/WaterLevelHistory';
-import { MapPin, Search, Menu, Home, Bell } from 'lucide-react';
+import { MapPin, Search, Menu, Bell } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -32,7 +32,6 @@ const Index = () => {
   );
 
   const navigationItems = [
-    { name: 'Main', icon: Home, action: () => navigate('/') },
     { name: 'Search', icon: Search, action: () => navigate('/search') },
     { name: 'Alerts', icon: Bell, action: () => navigate('/safety') },
   ];
