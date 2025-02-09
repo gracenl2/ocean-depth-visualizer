@@ -2,9 +2,18 @@
 import { useState } from 'react';
 import WaveAnimation from '@/components/WaveAnimation';
 import WaterLevelHistory from '@/components/WaterLevelHistory';
-import { MapPin, Search } from 'lucide-react';
+import { MapPin, Search, Menu, Home, Bell } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 
 // Sample data - in a real app this would come from an API
 const cities = [
@@ -16,13 +25,49 @@ const cities = [
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCity, setSelectedCity] = useState(cities[0]);
+  const navigate = useNavigate();
 
   const filteredCities = cities.filter(city =>
     city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const navigationItems = [
+    { name: 'Main', icon: Home, action: () => navigate('/') },
+    { name: 'Search', icon: Search, action: () => navigate('/search') },
+    { name: 'Alerts', icon: Bell, action: () => navigate('/alerts') },
+  ];
+
   return (
     <div className="min-h-screen bg-monitor-background text-white">
+      {/* Navigation Menu */}
+      <div className="fixed top-4 right-4 z-50">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="text-white">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Navigation</SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 space-y-4">
+              {navigationItems.map((item) => (
+                <Button
+                  key={item.name}
+                  variant="ghost"
+                  className="w-full justify-start gap-2"
+                  onClick={item.action}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.name}
+                </Button>
+              ))}
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
       {/* Search Bar */}
       <div className="container pt-8">
         <div className="relative">
