@@ -163,11 +163,11 @@ const Safety = () => {
           </div>
         </Card>
 
-        {/* Map Section - Now with increased height */}
+        {/* Map Section */}
         <Card className="bg-white/5 border-white/10">
           <div className="p-6">
             <h3 className="text-xl font-semibold mb-4 text-white">Safe Region Map</h3>
-            <div className="h-96 bg-white/5 rounded-lg" /> {/* Changed from h-64 to h-96 */}
+            <div className="h-[600px] bg-white/5 rounded-lg" /> {/* Increased from h-96 to h-[600px] */}
           </div>
         </Card>
       </div>
