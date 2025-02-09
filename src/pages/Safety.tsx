@@ -1,144 +1,20 @@
-
-import * as React from "react";
+import { useState } from 'react';
 import { MapPin, Search, Bell, Menu, Home } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useNavigate } from 'react-router-dom';
-import * as SheetPrimitive from "@radix-ui/react-sheet";
-import * as ProgressPrimitive from "@radix-ui/react-progress";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 
-// Utility functions
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-// Progress Component
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & { indicatorColor?: string }
->(({ className, value, indicatorColor, ...props }, ref) => (
-  <ProgressPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
-      className
-    )}
-    {...props}
-  >
-    <ProgressPrimitive.Indicator
-      className={cn("h-full w-full flex-1 transition-all", indicatorColor)}
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </ProgressPrimitive.Root>
-));
-Progress.displayName = ProgressPrimitive.Root.displayName;
-
-// Card Component
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-));
-Card.displayName = "Card";
-
-// Input Component
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
-Input.displayName = "Input";
-
-// Button Component
-const Button = React.forwardRef<
-  HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: "ghost" | "default";
-    size?: "icon" | "default";
-  }
->(({ className, variant = "default", size = "default", ...props }, ref) => {
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
-        {
-          "bg-primary text-primary-foreground hover:bg-primary/90": variant === "default",
-          "hover:bg-accent hover:text-accent-foreground": variant === "ghost",
-          "h-10 w-10": size === "icon",
-          "h-10 px-4 py-2": size === "default",
-        },
-        className
-      )}
-      ref={ref}
-      {...props}
-    />
-  );
-});
-Button.displayName = "Button";
-
-// Sheet Components
-const Sheet = SheetPrimitive.Root;
-const SheetTrigger = SheetPrimitive.Trigger;
-const SheetContent = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <SheetPrimitive.Portal>
-    <SheetPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500 inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </SheetPrimitive.Content>
-  </SheetPrimitive.Portal>
-));
-SheetContent.displayName = SheetPrimitive.Content.displayName;
-
-const SheetHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col space-y-2", className)} {...props} />
-);
-SheetHeader.displayName = "SheetHeader";
-
-const SheetTitle = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <SheetPrimitive.Title
-    ref={ref}
-    className={cn("text-lg font-semibold text-foreground", className)}
-    {...props}
-  />
-));
-SheetTitle.displayName = SheetPrimitive.Title.displayName;
-
-// Main Safety Component
 const Safety = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const dangerLevel = 75;
   const navigate = useNavigate();
 
