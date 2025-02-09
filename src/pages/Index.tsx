@@ -70,7 +70,7 @@ const Index = () => {
 
       {/* Search Bar */}
       <div className="container pt-8">
-        <div className="relative max-w-md mx-auto">
+        <div className="relative max-w-md">
           <Input
             type="text"
             placeholder="Search cities..."
@@ -83,7 +83,7 @@ const Index = () => {
         
         {/* Search Results */}
         {searchQuery && (
-          <Card className="mt-2 absolute w-full max-w-md mx-auto left-1/2 -translate-x-1/2 z-10 bg-monitor-card/95 backdrop-blur border-white/10">
+          <Card className="mt-2 absolute w-full max-w-md z-10 bg-monitor-card/95 backdrop-blur border-white/10">
             <div className="p-2">
               {filteredCities.map((city) => (
                 <button
