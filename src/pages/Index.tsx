@@ -43,20 +43,20 @@ const Index = () => {
       <div className="fixed top-4 right-4 z-50">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="text-white">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-sky-400/20">
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent>
+          <SheetContent className="bg-sky-50">
             <SheetHeader>
-              <SheetTitle>Navigation</SheetTitle>
+              <SheetTitle className="text-sky-900">Navigation</SheetTitle>
             </SheetHeader>
             <div className="mt-6 space-y-4">
               {navigationItems.map((item) => (
                 <Button
                   key={item.name}
                   variant="ghost"
-                  className="w-full justify-start gap-2"
+                  className="w-full justify-start gap-2 text-sky-800 hover:bg-sky-100 hover:text-sky-900"
                   onClick={item.action}
                 >
                   <item.icon className="h-5 w-5" />
