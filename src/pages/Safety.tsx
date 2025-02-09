@@ -9,6 +9,12 @@ const Safety = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const dangerLevel = 75; // This would come from an API in a real app
 
+  const getDangerColor = (level: number) => {
+    if (level <= 30) return 'bg-green-500';
+    if (level <= 60) return 'bg-yellow-500';
+    return 'bg-red-500';
+  };
+
   const formatDate = () => {
     const date = new Date();
     const options: Intl.DateTimeFormatOptions = { 
@@ -71,7 +77,10 @@ const Safety = () => {
                   <span className="text-lg">Danger Level</span>
                 </div>
                 <Progress value={dangerLevel} className="h-2 bg-white/20">
-                  <div className="h-full bg-red-500 transition-all" style={{ width: `${dangerLevel}%` }} />
+                  <div 
+                    className={`h-full transition-all ${getDangerColor(dangerLevel)}`} 
+                    style={{ width: `${dangerLevel}%` }} 
+                  />
                 </Progress>
               </div>
 
