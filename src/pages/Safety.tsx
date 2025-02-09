@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Search, Bell, Menu, Home } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -162,11 +163,11 @@ const Safety = () => {
           </div>
         </Card>
 
-        {/* Map Section */}
+        {/* Map Section - Now with increased height */}
         <Card className="bg-white/5 border-white/10">
           <div className="p-6">
             <h3 className="text-xl font-semibold mb-4 text-white">Safe Region Map</h3>
-            <div className="h-64 bg-white/5 rounded-lg" />
+            <div className="h-96 bg-white/5 rounded-lg" /> {/* Changed from h-64 to h-96 */}
           </div>
         </Card>
       </div>
