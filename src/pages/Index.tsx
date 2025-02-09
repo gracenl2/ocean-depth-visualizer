@@ -152,7 +152,7 @@ const Index = () => {
         </Card>
 
         {/* Water Level History */}
-        <WaterLevelHistory />
+        <WaterLevelHistory selectedCity={selectedCity} />
       </div>
     </div>
   );
