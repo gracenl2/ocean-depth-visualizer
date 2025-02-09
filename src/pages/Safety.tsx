@@ -20,14 +20,15 @@ const Safety = () => {
   const navigate = useNavigate();
 
   const navigationItems = [
+    { name: 'Main', icon: Home, action: () => navigate('/') },
     { name: 'Search', icon: Search, action: () => navigate('/search') },
     { name: 'Alerts', icon: Bell, action: () => navigate('/safety') },
   ];
 
   const getDangerColor = (level: number) => {
-    if (level <= 30) return 'bg-emerald-500';
-    if (level <= 60) return 'bg-amber-500';
-    return 'bg-red-600';
+    if (level <= 30) return 'bg-green-500';
+    if (level <= 60) return 'bg-yellow-500';
+    return 'bg-red-500';
   };
 
   const formatDate = () => {
@@ -131,11 +132,11 @@ const Safety = () => {
               <div className="space-y-2 text-sm text-white">
                 <div className="flex justify-between">
                   <span>0% - 30%</span>
-                  <span className="text-emerald-400">Safe</span>
+                  <span className="text-green-400">Safe</span>
                 </div>
                 <div className="flex justify-between">
                   <span>31% - 60%</span>
-                  <span className="text-amber-400">Caution</span>
+                  <span className="text-yellow-400">Caution</span>
                 </div>
                 <div className="flex justify-between">
                   <span>61% - 100%</span>
