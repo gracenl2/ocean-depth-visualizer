@@ -78,7 +78,7 @@ const Safety = () => {
                 </div>
                 <Progress value={dangerLevel} className="h-2 bg-white/20">
                   <div 
-                    className={`h-full transition-all ${getDangerColor(dangerLevel)}`} 
+                    className={`h-full ${getDangerColor(dangerLevel)}`} 
                     style={{ width: `${dangerLevel}%` }} 
                   />
                 </Progress>
