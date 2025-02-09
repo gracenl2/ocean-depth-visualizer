@@ -1,13 +1,29 @@
 
 import { useState } from 'react';
-import { MapPin, Search, Bell } from 'lucide-react';
+import { MapPin, Search, Bell, Menu, Home } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { useNavigate } from 'react-router-dom';
 
 const Safety = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const dangerLevel = 75; // This would come from an API in a real app
+  const dangerLevel = 75;
+  const navigate = useNavigate();
+
+  const navigationItems = [
+    { name: 'Main', icon: Home, action: () => navigate('/') },
+    { name: 'Search', icon: Search, action: () => navigate('/search') },
+    { name: 'Alerts', icon: Bell, action: () => navigate('/alerts') },
+  ];
 
   const getDangerColor = (level: number) => {
     if (level <= 30) return 'bg-green-500';
@@ -37,6 +53,35 @@ const Safety = () => {
 
   return (
     <div className="min-h-screen bg-monitor-background">
+      {/* Navigation Menu */}
+      <div className="fixed top-4 right-4 z-50">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="text-white hover:bg-sky-400/20">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="bg-sky-50">
+            <SheetHeader>
+              <SheetTitle className="text-sky-900">Sea Near Me</SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 space-y-4">
+              {navigationItems.map((item) => (
+                <Button
+                  key={item.name}
+                  variant="ghost"
+                  className="w-full justify-start gap-2 text-sky-800 hover:bg-sky-100 hover:text-sky-900"
+                  onClick={item.action}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.name}
+                </Button>
+              ))}
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
       {/* Header */}
       <div className="container pt-4 text-white">
         <div className="flex items-center gap-2 opacity-80 mb-2">
