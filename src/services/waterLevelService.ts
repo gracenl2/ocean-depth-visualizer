@@ -66,8 +66,8 @@ export const fetchWaterLevelData = async (): Promise<WaterLevelData[]> => {
         id: station.id,
         name: station.name,
         address: station.address,
-        currentLevel: currentLevel / 10, // Convert to normalized value between 0-1
-        averageLevel: averageLevel / 10,
+        currentLevel: currentLevel,
+        averageLevel: averageLevel,
       };
     });
 

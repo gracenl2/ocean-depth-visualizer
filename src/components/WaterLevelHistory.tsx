@@ -21,8 +21,9 @@ const WaterLevelHistory = ({ stationId }: WaterLevelHistoryProps) => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
   const { data: historicalData = [], isLoading } = useHistoricalData(stationId);
 
-  const highValue = Math.max(...historicalData.map(d => d.level));
-  const lowValue = Math.min(...historicalData.map(d => d.level));
+  const hasData = historicalData && historicalData.length > 0;
+  const highValue = hasData ? Math.max(...historicalData.map(d => d.level)) : 0;
+  const lowValue = hasData ? Math.min(...historicalData.map(d => d.level)) : 0;
 
   return (
     <Card className="bg-monitor-card backdrop-blur-lg border-white/10 mt-8">
@@ -52,6 +53,10 @@ const WaterLevelHistory = ({ stationId }: WaterLevelHistoryProps) => {
         {isLoading ? (
           <div className="h-64 flex items-center justify-center text-white/60">
             Loading historical data...
+          </div>
+        ) : !hasData ? (
+          <div className="h-64 flex items-center justify-center text-white/60">
+            No historical data available
           </div>
         ) : (
           <div className="h-64 w-full">
