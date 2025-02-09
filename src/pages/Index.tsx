@@ -49,7 +49,7 @@ const Index = () => {
           </SheetTrigger>
           <SheetContent className="bg-sky-50">
             <SheetHeader>
-              <SheetTitle className="text-sky-900">Navigation</SheetTitle>
+              <SheetTitle className="text-sky-900">Sea Near Me</SheetTitle>
             </SheetHeader>
             <div className="mt-6 space-y-4">
               {navigationItems.map((item) => (
