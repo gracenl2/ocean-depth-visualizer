@@ -24,17 +24,43 @@ const STATIONS = [
   { id: 8638610, name: 'Chesapeake Bay', address: 'Virginia' },
 ];
 
+const getLast31DaysDateRange = () => {
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 30); // Get last 31 days
+
+  return {
+    startDate: startDate.toISOString().split('T')[0],
+    endDate: endDate.toISOString().split('T')[0],
+  };
+};
+
 export const fetchWaterLevelData = async (): Promise<WaterLevelData[]> => {
   try {
+    const { startDate, endDate } = getLast31DaysDateRange();
+    
     const promises = STATIONS.map(async (station) => {
-      const url = `${NOAA_API_BASE}?begin_date=20240101&end_date=20240331&station=${station.id}&product=water_level&datum=MLLW&units=metric&time_zone=gmt&format=json`;
+      const url = `${NOAA_API_BASE}?begin_date=${startDate}&end_date=${endDate}&station=${station.id}&product=water_level&datum=MLLW&units=metric&time_zone=gmt&format=json`;
       const response = await fetch(url);
       const data = await response.json();
       
+      if (data.error) {
+        console.error('NOAA API Error:', data.error);
+        return {
+          id: station.id,
+          name: station.name,
+          address: station.address,
+          currentLevel: 0,
+          averageLevel: 0,
+        };
+      }
+      
       // Calculate average and current levels from the data
       const levels = data.data?.map((d: any) => parseFloat(d.v)) || [];
-      const averageLevel = levels.reduce((a: number, b: number) => a + b, 0) / levels.length;
-      const currentLevel = levels[levels.length - 1] || 0;
+      const averageLevel = levels.length > 0 
+        ? levels.reduce((a: number, b: number) => a + b, 0) / levels.length 
+        : 0;
+      const currentLevel = levels.length > 0 ? levels[levels.length - 1] : 0;
 
       return {
         id: station.id,
@@ -62,15 +88,19 @@ export const useWaterLevelData = () => {
 
 export const fetchHistoricalData = async (stationId: number): Promise<HistoricalData[]> => {
   try {
-    const endDate = new Date().toISOString().split('T')[0];
-    const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const { startDate, endDate } = getLast31DaysDateRange();
     
     const url = `${NOAA_API_BASE}?begin_date=${startDate}&end_date=${endDate}&station=${stationId}&product=water_level&datum=MLLW&units=metric&time_zone=gmt&format=json`;
     const response = await fetch(url);
     const data = await response.json();
     
+    if (data.error) {
+      console.error('NOAA API Error:', data.error);
+      return [];
+    }
+    
     return data.data?.map((d: any) => ({
-      date: new Date(d.t).toLocaleDateString('en-US', { month: 'short' }),
+      date: new Date(d.t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       level: parseFloat(d.v),
     })) || [];
   } catch (error) {

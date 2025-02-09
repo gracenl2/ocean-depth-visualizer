@@ -80,11 +80,12 @@ const WaterLevelHistory = ({ stationId }: WaterLevelHistoryProps) => {
                 <Tooltip
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
+                      const value = payload[0].value as number;
                       return (
                         <div className="bg-monitor-card backdrop-blur p-3 rounded-lg border border-white/10">
                           <p className="text-white/80">{payload[0].payload.date}</p>
                           <p className="text-xl font-bold text-white">
-                            {payload[0].value.toFixed(2)}m
+                            {value.toFixed(2)}m
                           </p>
                         </div>
                       );
