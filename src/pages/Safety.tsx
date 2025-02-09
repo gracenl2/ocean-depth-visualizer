@@ -22,7 +22,7 @@ const Safety = () => {
   const navigationItems = [
     { name: 'Main', icon: Home, action: () => navigate('/') },
     { name: 'Search', icon: Search, action: () => navigate('/search') },
-    { name: 'Alerts', icon: Bell, action: () => navigate('/alerts') },
+    { name: 'Alerts', icon: Bell, action: () => navigate('/safety') },
   ];
 
   const getDangerColor = (level: number) => {
