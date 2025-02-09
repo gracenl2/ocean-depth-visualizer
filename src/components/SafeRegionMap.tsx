@@ -8,18 +8,33 @@ const SafeRegionMap = () => {
   const map = useRef<mapboxgl.Map | null>(null);
   const [mapboxToken, setMapboxToken] = useState('');
 
+  // Generate random coordinates within reasonable bounds
+  const getRandomLocation = () => {
+    // Random coordinates within roughly the world's main landmasses
+    const lat = Math.random() * 140 - 70; // -70 to 70 degrees latitude
+    const lng = Math.random() * 360 - 180; // -180 to 180 degrees longitude
+    return [lng, lat];
+  };
+
   useEffect(() => {
     if (!mapContainer.current || !mapboxToken) return;
 
     mapboxgl.accessToken = mapboxToken;
     
+    const randomLocation = getRandomLocation();
+    
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: [-73.5674, 45.5017], // Montreal coordinates
-      zoom: 12,
+      center: randomLocation,
+      zoom: 3,
       pitch: 45,
     });
+
+    // Add marker at the random location
+    new mapboxgl.Marker({ color: '#FF0000' })
+      .setLngLat(randomLocation)
+      .addTo(map.current);
 
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
