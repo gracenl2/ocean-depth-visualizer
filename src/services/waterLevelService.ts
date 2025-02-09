@@ -55,12 +55,13 @@ export const fetchWaterLevelData = async (): Promise<WaterLevelData[]> => {
         };
       }
       
-      // Calculate average and current levels from the data
       const levels = data.data?.map((d: any) => parseFloat(d.v)) || [];
-      const averageLevel = levels.length > 0 
-        ? levels.reduce((a: number, b: number) => a + b, 0) / levels.length 
+      const validLevels = levels.filter((level: number) => !isNaN(level));
+      
+      const averageLevel = validLevels.length > 0 
+        ? validLevels.reduce((a: number, b: number) => a + b, 0) / validLevels.length 
         : 0;
-      const currentLevel = levels.length > 0 ? levels[levels.length - 1] : 0;
+      const currentLevel = validLevels.length > 0 ? validLevels[validLevels.length - 1] : 0;
 
       return {
         id: station.id,
@@ -99,10 +100,12 @@ export const fetchHistoricalData = async (stationId: number): Promise<Historical
       return [];
     }
     
-    return data.data?.map((d: any) => ({
-      date: new Date(d.t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      level: parseFloat(d.v),
-    })) || [];
+    return (data.data || [])
+      .map((d: any) => ({
+        date: new Date(d.t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        level: parseFloat(d.v),
+      }))
+      .filter((item: HistoricalData) => !isNaN(item.level));
   } catch (error) {
     console.error('Error fetching historical data:', error);
     return [];

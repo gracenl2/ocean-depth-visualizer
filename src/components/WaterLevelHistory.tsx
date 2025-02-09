@@ -21,9 +21,10 @@ const WaterLevelHistory = ({ stationId }: WaterLevelHistoryProps) => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
   const { data: historicalData = [], isLoading } = useHistoricalData(stationId);
 
-  const hasData = historicalData && historicalData.length > 0;
-  const highValue = hasData ? Math.max(...historicalData.map(d => d.level)) : 0;
-  const lowValue = hasData ? Math.min(...historicalData.map(d => d.level)) : 0;
+  const filteredData = historicalData.filter(d => d.level !== null && !isNaN(d.level));
+  const hasData = filteredData && filteredData.length > 0;
+  const highValue = hasData ? Math.max(...filteredData.map(d => d.level)) : 0;
+  const lowValue = hasData ? Math.min(...filteredData.map(d => d.level)) : 0;
 
   return (
     <Card className="bg-monitor-card backdrop-blur-lg border-white/10 mt-8">
@@ -62,7 +63,7 @@ const WaterLevelHistory = ({ stationId }: WaterLevelHistoryProps) => {
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                data={historicalData}
+                data={filteredData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
               >
                 <defs>
@@ -78,6 +79,7 @@ const WaterLevelHistory = ({ stationId }: WaterLevelHistoryProps) => {
                   tick={{ fill: 'rgba(255, 255, 255, 0.6)' }}
                 />
                 <YAxis
+                  domain={[lowValue - 0.5, highValue + 0.5]}
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: 'rgba(255, 255, 255, 0.6)' }}
