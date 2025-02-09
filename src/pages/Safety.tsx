@@ -73,8 +73,8 @@ const Safety = () => {
             <div className="p-6 space-y-6">
               <div>
                 <div className="flex justify-between items-baseline mb-2">
-                  <span className="text-5xl font-bold">{dangerLevel}%</span>
-                  <span className="text-lg">Danger Level</span>
+                  <span className="text-5xl font-bold text-white">{dangerLevel}%</span>
+                  <span className="text-lg text-white">Danger Level</span>
                 </div>
                 <Progress value={dangerLevel} className="h-2 bg-white/20">
                   <div 
@@ -84,7 +84,7 @@ const Safety = () => {
                 </Progress>
               </div>
 
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-sm text-white">
                 <div className="flex justify-between">
                   <span>0% - 30%</span>
                   <span className="text-green-400">Safe</span>
@@ -105,15 +105,15 @@ const Safety = () => {
         {/* Current Status */}
         <Card className="bg-white/5 border-white/10 mb-8">
           <div className="p-6">
-            <h3 className="text-xl font-semibold mb-4">Current Status</h3>
+            <h3 className="text-xl font-semibold mb-4 text-white">Current Status</h3>
             <div className="space-y-4">
               <div>
-                <p className="text-sm opacity-60 mb-1">Description</p>
-                <p className="text-lg">Possible to evacuate</p>
+                <p className="text-sm opacity-60 text-white mb-1">Description</p>
+                <p className="text-lg text-white">Possible to evacuate</p>
               </div>
               <div>
-                <p className="text-sm opacity-60 mb-1">Affected Region</p>
-                <p className="text-lg">Montreal Coastal Area</p>
+                <p className="text-sm opacity-60 text-white mb-1">Affected Region</p>
+                <p className="text-lg text-white">Montreal Coastal Area</p>
               </div>
             </div>
           </div>
@@ -122,7 +122,7 @@ const Safety = () => {
         {/* Map Section */}
         <Card className="bg-white/5 border-white/10">
           <div className="p-6">
-            <h3 className="text-xl font-semibold mb-4">Safe Region Map</h3>
+            <h3 className="text-xl font-semibold mb-4 text-white">Safe Region Map</h3>
             <div className="h-64 bg-white/5 rounded-lg" />
           </div>
         </Card>
