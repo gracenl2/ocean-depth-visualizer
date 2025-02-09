@@ -1,5 +1,7 @@
 
 import { useState } from 'react';
+import WaveAnimation from '@/components/WaveAnimation';
+import WaterLevelHistory from '@/components/WaterLevelHistory';
 import { MapPin, Search, Menu, Home, Bell } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -22,6 +24,7 @@ const cities = [
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCity, setSelectedCity] = useState(cities[0]);
   const navigate = useNavigate();
 
   const filteredCities = cities.filter(city =>
@@ -34,12 +37,8 @@ const Index = () => {
     { name: 'Alerts', icon: Bell, action: () => navigate('/safety') },
   ];
 
-  const handleCitySelect = (city: typeof cities[0]) => {
-    navigate('/monitor', { state: { selectedCity: city } });
-  };
-
   return (
-    <div className="min-h-screen bg-monitor-background">
+    <div className="min-h-screen bg-monitor-background text-white">
       {/* Navigation Menu */}
       <div className="fixed top-4 right-4 z-50">
         <Sheet>
@@ -69,10 +68,9 @@ const Index = () => {
         </Sheet>
       </div>
 
-      {/* Search Section */}
+      {/* Search Bar */}
       <div className="container pt-8">
-        <h1 className="text-4xl font-bold text-white mb-8">Sea Near Me</h1>
-        <div className="relative max-w-md mx-auto">
+        <div className="relative max-w-md">
           <Input
             type="text"
             placeholder="Search cities..."
@@ -84,27 +82,77 @@ const Index = () => {
         </div>
         
         {/* Search Results */}
-        <div className="mt-4 space-y-4 max-w-md mx-auto">
-          {filteredCities.map((city) => (
-            <Card
-              key={city.id}
-              className="bg-monitor-card/95 backdrop-blur border-white/10 hover:bg-monitor-card/80 transition-colors cursor-pointer"
-              onClick={() => handleCitySelect(city)}
-            >
-              <div className="p-4">
-                <div className="flex items-center gap-2 text-white">
-                  <MapPin className="w-4 h-4 text-white/80" />
-                  <span className="font-medium">{city.name}</span>
-                </div>
-                <div className="mt-1 text-sm text-white/60">{city.address}</div>
-                <div className="mt-2 flex justify-between items-center">
-                  <span className="text-sm text-white/80">Current Level</span>
-                  <span className="text-lg font-semibold text-white">{(city.currentLevel * 100).toFixed(0)}m</span>
-                </div>
-              </div>
-            </Card>
-          ))}
+        {searchQuery && (
+          <Card className="mt-2 absolute w-full max-w-md z-10 bg-monitor-card/95 backdrop-blur border-white/10">
+            <div className="p-2">
+              {filteredCities.map((city) => (
+                <button
+                  key={city.id}
+                  onClick={() => {
+                    setSelectedCity(city);
+                    setSearchQuery('');
+                  }}
+                  className="w-full text-left p-3 hover:bg-white/10 rounded-lg transition-colors text-white"
+                >
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-white/80" />
+                    <span>{city.name}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </Card>
+        )}
+      </div>
+
+      {/* Location and Date Header */}
+      <div className="container pt-4 space-y-2">
+        <div className="flex items-center gap-2 text-white/90">
+          <MapPin className="w-5 h-5" />
+          <span className="text-sm">{selectedCity.name}, {selectedCity.address}</span>
         </div>
+        <div className="text-white">
+          <div className="text-xl font-semibold">
+            {new Date().toLocaleDateString('en-US', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </div>
+          <div className="text-sm">
+            {new Date().toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mt-8">
+        <Card className="bg-monitor-card backdrop-blur-lg border-white/10">
+          <div className="p-6 space-y-8">
+            <h1 className="text-3xl font-bold text-white">Water Level Monitor</h1>
+            
+            {/* Wave Animation */}
+            <div className="relative">
+              <WaveAnimation
+                currentLevel={selectedCity.currentLevel}
+                averageLevel={selectedCity.averageLevel}
+              />
+              
+              {/* Current Level Display */}
+              <div className="absolute bottom-8 right-8 bg-monitor-card backdrop-blur p-4 rounded-lg">
+                <div className="text-sm text-white/80">Current Level</div>
+                <div className="text-4xl font-bold text-white">{(selectedCity.currentLevel * 100).toFixed(0)}m</div>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Water Level History */}
+        <WaterLevelHistory />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Search, Bell, Menu, Home } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -120,11 +121,12 @@ const Safety = () => {
                   <span className="text-5xl font-bold text-white">{dangerLevel}%</span>
                   <span className="text-lg text-white">Danger Level</span>
                 </div>
-                <Progress 
-                  value={dangerLevel} 
-                  className="h-2" 
-                  indicatorColor={getDangerColor(dangerLevel)}
-                />
+                <Progress value={dangerLevel} className="h-2 bg-white/20">
+                  <div 
+                    className={`h-full ${getDangerColor(dangerLevel)}`} 
+                    style={{ width: `${dangerLevel}%` }} 
+                  />
+                </Progress>
               </div>
 
               <div className="space-y-2 text-sm text-white">
